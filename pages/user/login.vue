@@ -1,5 +1,5 @@
 <template>
-   <div>这是机票</div>
+   <div>首页122553</div>
 </template>
 <script>
 export default {
