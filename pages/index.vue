@@ -13,7 +13,8 @@
     <div class="search">
       <div class="tabBtn">
         <el-row type="flex" class="search-tab">
-          <span v-for="(item,index) in btns" :key="index" @click="serverBtn(index)">
+          <span v-for="(item,index) in btns" :key="index" @click="serverBtn(index)"
+           :class="{ active: current === index}">
             <i>{{item.title}}</i>
           </span>
         </el-row>
@@ -24,6 +25,7 @@
         </el-row>
       </div>
     </div>
+
   </div>
 </template>
 <script>
