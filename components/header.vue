@@ -1,12 +1,12 @@
 <template>
-  <div class="content">
+  <div class="container">
     <el-row type="flex" justify="space-between" class="main">
-      <div class="ima">
+      <div class="logo">
         <nuxt-link to="/">
           <img src="http://157.122.54.189:9093/images/logo.jpg" alt />
         </nuxt-link>
       </div>
-      <el-row type="flex" class="nav">
+      <el-row type="flex" class="navs">
         <nuxt-link to="/">首页</nuxt-link>
         <nuxt-link to="/post">旅游攻略</nuxt-link>
         <nuxt-link to="/hotel">酒店</nuxt-link>
@@ -21,9 +21,11 @@
         <div v-else>
           <el-dropdown>
             <span class="el-dropdown-link">
-              <img :src="$axios.defaults.baseURL+$store.state.user.userInfo.user.defaultAvatar" alt="">
-                {{$store.state.user.userInfo.user.nickname}}
-              <i class="el-icon-arrow-down el-icon--right"></i>
+              <img :src="$axios.defaults.baseURL+$store.state.user.userInfo.user.defaultAvatar" alt />
+              {{$store.state.user.userInfo.user.nickname}}
+              <i
+                class="el-icon-arrow-down el-icon--right"
+              ></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>个人中心</el-dropdown-item>
@@ -37,25 +39,44 @@
 </template>
 <script>
 export default {
-   methods:{
-      handleLoginOut(){
-         this.$store.commit('user/clearUserInfo')
-         this.$message({
-              type:'warning',
-              message:'退出成功'
-         })
-      }
-   }
+  methods: {
+    handleLoginOut() {
+      this.$store.commit("user/clearUserInfo");
+      this.$message({
+        type: "warning",
+        message: "退出成功"
+      });
+    }
+  }
 };
 </script>
 
 <style lang="less" scoped>
-.content {
+.container {
   height: 60px;
-  // position: relative;
+  box-shadow: 0 3px 3px #ccc;
+  //position: relative;
+  //z-index: 999;
 }
-.nav {
+
+.main {
+  width: 1000px;
+  margin: 0 auto;
+  line-height: 60px;
+}
+
+.logo {
+  margin-right: 20px;
+  img {
+    width: 165px;
+    height: 42px;
+    margin-top: 9px;
+  }
+}
+
+.navs {
   flex: 1;
+
   a {
     display: block;
     height: 60px;
@@ -69,34 +90,21 @@ export default {
   }
 
   .nuxt-link-exact-active {
-    background-color: #409eff;
+    background: #409eff;
     color: #fff;
+
     &:hover {
       color: #fff;
     }
   }
 }
-.main {
-  width: 1000px;
-  margin: 0 auto;
-  line-height: 60px;
-  .ima {
-    width: 165px;
-    height: 42px;
-    margin-top: 8px;
-    margin-right: 15px;
-  }
-  i{
-    text-align: center
-  }
-}
 
-.el-dropdown-link{
-    outline: none; 
-    img{
-        width:36px;
-        height:36px;
-        vertical-align: middle;
-    }
+.el-dropdown-link {
+  outline: none;
+  img {
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+  }
 }
 </style>
