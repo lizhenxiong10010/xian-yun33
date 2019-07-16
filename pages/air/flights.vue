@@ -17,7 +17,7 @@
                 
                 <!-- 航班信息 -->
                 <div>
-                  <FlightsItem />
+                  <FlightsItem v-for="(item,index) in flightsList" :key="index" :data="item"/>
                 </div>
             </div>
 
@@ -40,9 +40,19 @@ export default {
     },
     data(){
         return {
-            
+            flightsList: [],
         }
-    }
+    },
+
+     mounted() {
+    this.$axios({
+      url: "/airs",
+      params: this.$route.query
+    }).then(res => {
+      console.log(res);
+      this.flightsList = res.data.flights;
+    });
+  }
 }
 </script>
 

@@ -1,13 +1,11 @@
 <template>
-  <div class="flight-item">
+  <div class="flight-item" @click="handleShowRecommend">
     <div>
       <!-- 显示的机票信息 -->
       <el-row
         type="flex"
         align="middle"
         class="flight-info"
-        v-for="(data,index) in flightsList"
-        :key="index"
       >
         <el-col :span="6">
           <span>{{data.airline_name}}</span>
@@ -34,7 +32,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="flight-recommend">
+    <div class="flight-recommend" v-if="showRecommend">
       <!-- 隐藏的座位信息列表 -->
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="4">低价推荐</el-col>
@@ -44,7 +42,7 @@
             justify="space-between"
             align="middle"
             class="flight-sell"
-            v-for="(item,index) in flightsList.seat_infos"
+            v-for="(item,index) in data.seat_infos"
             :key="index"
           >
             <el-col :span="16" class="flight-sell-left">
@@ -64,30 +62,29 @@
 
 <script>
 export default {
-  // props: {
-  //     // 数据
-  //     data: {
-  //         type: Object,
-  //         // 默认是空数组
-  //         default: {}
-  //     }
-  // },
+  props: {
+      // 数据
+      data: {
+          type: Object,
+          // 默认是空数组
+          default: {}
+      }
+  },
 
   data() {
     return {
-      flightsList: []
+      showRecommend :false
     };
+    
   },
 
-  mounted() {
-    this.$axios({
-      url: "/airs",
-      params: this.$route.query
-    }).then(res => {
-      console.log(res);
-      this.flightsList = res.data.flights;
-    });
-  }
+  methods:{
+      handleShowRecommend(){
+         this.showRecommend = !this.showRecommend
+      }
+  },
+
+ 
 };
 </script>
 
