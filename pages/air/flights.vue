@@ -4,7 +4,9 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <div>
+          <FlightsFilters :data="flightsList" />
+        </div>
 
         <!-- 航班头部布局 -->
         <div>
@@ -41,16 +43,22 @@
 <script>
 import FlightsListHead from "@/components/air/flightsListHead";
 import FlightsItem from "@/components/air/flightsItem";
+import FlightsFilters from "@/components/air/flightsFilters";
 
 export default {
   components: {
     FlightsListHead,
-    FlightsItem
+    FlightsItem,
+    FlightsFilters
   },
   data() {
     return {
-      flightsList: [],
-      dataList:[],
+      flightsList: {
+        flights: [],
+        info: {},
+        options: {}
+      },
+      dataList: [],
       pagenum: 1,
       pagesize: 2,
       total: 0
@@ -64,33 +72,33 @@ export default {
         params: this.$route.query
       }).then(res => {
         console.log(res);
-        this.flightsList = res.data
-        this.setDataList()
-        this.total= res.data.total
+        this.flightsList = res.data;
+        this.setDataList();
+        this.total = res.data.total;
       });
     },
 
     setDataList() {
-        const start = (this.pagenum - 1) * this.pagesize
-        const end  = start +this.pagesize
-        this.dataList = this.flightsList.flights.slice(start,end)
+      const start = (this.pagenum - 1) * this.pagesize;
+      const end = start + this.pagesize;
+      this.dataList = this.flightsList.flights.slice(start, end);
     },
     handleSizeChange(val) {
-        //  console.log(`每页 ${val} 条`);
-         this.pagesize = val
-         this.pagenum = 1
-         this.setDataList()
+      //  console.log(`每页 ${val} 条`);
+      this.pagesize = val;
+      this.pagenum = 1;
+      this.setDataList();
     },
 
     handleCurrentChange(val) {
-        //  console.log(`当前页: ${val}`);
-         this.pagenum = val
-         this.setDataList()
+      //  console.log(`当前页: ${val}`);
+      this.pagenum = val;
+      this.setDataList();
     }
   },
 
   mounted() {
-      this.getData()
+    this.getData();
   }
 };
 </script>
