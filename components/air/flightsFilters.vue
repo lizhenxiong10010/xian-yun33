@@ -21,7 +21,7 @@
         <el-select size="mini" v-model="flightTimes" placeholder="起飞时间" @change="handleFlightTimes">
           <el-option
             :label="`${item.from}:00 - ${item.to}:00`"
-            :value="1"
+            :value="`${item.from},${item.to}`"
             v-for="(item,index) in data.options.flightTimes"
             :key="index"
           ></el-option>
@@ -74,22 +74,47 @@ export default {
         { name: '大', size: 'L' },
         { name: '中', size: 'M' },
         { name: '小', size: 'S' }
-      ]
+      ],
+
+      // filtersList: {}
     };
   },
 
   methods: {
     // 选择机场时候触发
-    handleAirport(value) {},
+    handleAirport(value) {
+        const arr = this.data.flights.filter(e =>{ 
+            return e.org_airport_name === value
+        })
+        this.$emit('setDataList',arr)
+    },
 
     // 选择出发时间时候触发
-    handleFlightTimes(value) {},
+    handleFlightTimes(value) {
+          const [ from, to ] = value.split(",")
+           const arr = this.data.flights.filter(e =>{ 
+            const [ start ] =e.dep_time.split(":")
+
+            return +from < +start && +start < +to
+        })
+        this.$emit('setDataList',arr)
+    },
 
     // 选择航空公司时候触发
-    handleCompany(value) {},
+    handleCompany(value) {
+         const arr = this.data.flights.filter(e =>{ 
+            return e.airline_name === value
+        })
+        this.$emit('setDataList',arr)
+    },
 
     // 选择机型时候触发
-    handleAirSize(value) {},
+    handleAirSize(value) {
+         const arr = this.data.flights.filter(e =>{ 
+            return e.plane_size === value
+        })
+        this.$emit('setDataList',arr)
+    },
 
     // 撤销条件时候触发
     handleFiltersCancel() {}

@@ -5,7 +5,7 @@
       <div class="flights-content">
         <!-- 过滤条件 -->
         <div>
-          <FlightsFilters :data="flightsList" />
+          <FlightsFilters :data="cacheFlightsData" @setDataList="setDataList"/>
         </div>
 
         <!-- 航班头部布局 -->
@@ -53,17 +53,31 @@ export default {
   },
   data() {
     return {
+      cacheFlightsData: {
+        flights: [],
+        info: {},
+        options: {}
+      },
       flightsList: {
         flights: [],
         info: {},
         options: {}
       },
-      dataList: [],
+      
       pagenum: 1,
-      pagesize: 2,
-      total: 0
+      pagesize: 8,
+      total:0
     };
   },
+
+  computed: {
+      dataList(){
+       return this.flightsList.flights.slice(
+           (this.pagenum - 1) * this.pagesize,
+           this.pagenum * this.pagesize
+      )
+  }
+},
 
   methods: {
     getData() {
@@ -73,28 +87,27 @@ export default {
       }).then(res => {
         console.log(res);
         this.flightsList = res.data;
-        this.setDataList();
-        this.total = res.data.total;
-      });
-    },
+        this.cacheFlightsData = {...res.data}
+        // this.total = res.data.total;
 
-    setDataList() {
-      const start = (this.pagenum - 1) * this.pagesize;
-      const end = start + this.pagesize;
-      this.dataList = this.flightsList.flights.slice(start, end);
+      });
     },
     handleSizeChange(val) {
       //  console.log(`每页 ${val} 条`);
       this.pagesize = val;
       this.pagenum = 1;
-      this.setDataList();
+    
     },
 
     handleCurrentChange(val) {
       //  console.log(`当前页: ${val}`);
       this.pagenum = val;
-      this.setDataList();
-    }
+    },
+    setDataList( arr ){
+            this.flightsList.flights = arr;
+        },
+  
+
   },
 
   mounted() {

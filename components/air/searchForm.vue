@@ -210,6 +210,7 @@ export default {
     box-sizing: border-box;
     border-top: 3px #eee solid;
     background: #eee;
+    cursor: pointer;
   }
 
   .active {
